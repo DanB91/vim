@@ -55,6 +55,8 @@ let mapleader=","             " change the leader to be a comma vs slash
 " Seriously, guys. It's not like :W is bound to anything anyway.
 command! W :w
 
+imap jj <Esc>
+
 fu! SplitScroll()
     :wincmd v
     :wincmd w
@@ -304,6 +306,6 @@ if filereadable($VIRTUAL_ENV . '/.vimrc')
     source $VIRTUAL_ENV/.vimrc
 endif
 
-if exists("&colorcolumn")
-   set colorcolumn=79
-endif
+"if exists("&colorcolumn")
+ "  set colorcolumn=79
+"endif
