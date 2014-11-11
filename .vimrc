@@ -2,7 +2,7 @@ set nocompatible              " be iMproved, required
 filetype off                  " required
 
 " set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/vundle/
+set rtp+=~/.vim/bundle/Vundle.vim/
 call vundle#rc()
 " alternatively, pass a path where Vundle should install plugins
 "let path = '~/some/path/here'
@@ -66,4 +66,4 @@ if has("gui_running")
 endif
 
 let g:ycm_extra_conf_globlist = ['~/.vim/bundle/YouCompleteMe/*', './*']
-let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/.ycm_extra_conf.py'
+let g:ycm_global_ycm_extra_conf = '~/.vim/.ycm_extra_conf.py'
