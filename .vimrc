@@ -2,7 +2,7 @@ set nocompatible              " be iMproved, required
 filetype off                  " required
 
 " set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim/
+set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#rc()
 " alternatively, pass a path where Vundle should install plugins
 "let path = '~/some/path/here'
@@ -28,6 +28,9 @@ Plugin 'git://git.wincent.com/command-t.git'
 " git repos on your local machine (i.e. when working on your own plugin)
 "Plugin 'file:///home/gmarik/path/to/plugin'
 " ...
+"
+Plugin 'vim-scripts/a.vim'
+Plugin 'danro/rename.vim'
 
 Plugin 'Valloric/YouCompleteMe'
 
@@ -65,5 +68,26 @@ if has("gui_running")
     set lines=50 columns=100
 endif
 
+set hlsearch
+map <A-m> :make!<CR>
+inoremap { {<CR>}<Esc>ko
+
+if has("gui_running")
+  " GUI is running or is about to start.
+  " Maximize gvim window (for an alternative on Windows, see simalt below).
+  set lines=50 columns=225
+else
+  " This is console Vim.
+  if exists("+lines")
+    set lines=50
+  endif
+  if exists("+columns")
+    set columns=100
+  endif
+endif
+
+
+
 let g:ycm_extra_conf_globlist = ['~/.vim/bundle/YouCompleteMe/*', './*']
+
 let g:ycm_global_ycm_extra_conf = '~/.vim/.ycm_extra_conf.py'
