@@ -31,7 +31,7 @@ Plugin 'git://git.wincent.com/command-t.git'
 "
 Plugin 'vim-scripts/a.vim'
 Plugin 'danro/rename.vim'
-
+Plugin 'rust-lang/rust.vim'
 Plugin 'Valloric/YouCompleteMe'
 
 
@@ -65,29 +65,33 @@ set shiftwidth=4 " indent also with 4 spaces
 set expandtab " expand tabs to spaces
 
 if has("gui_running")
-    set lines=50 columns=100
+    set lines=50 columns=230
 endif
 
 set hlsearch
 map <A-m> :make!<CR>
-inoremap { {<CR>}<Esc>ko
+inoremap {<CR> {<CR>}<Esc>ko
+inoremap {} {}
 
 if has("gui_running")
   " GUI is running or is about to start.
   " Maximize gvim window (for an alternative on Windows, see simalt below).
   set lines=50 columns=225
-else
-  " This is console Vim.
-  if exists("+lines")
-    set lines=50
-  endif
-  if exists("+columns")
-    set columns=100
-  endif
 endif
 
+function! Refactor()
+    call inputsave()
+    let @z=input("What do you want to rename '" . @z . "' to? ")
+    call inputrestore()
+endfunction
+ 
+" Locally (local to block) rename a variable
+nmap <Leader>rf "zyiw:call Refactor()<cr>mx:silent! norm gd<cr>[{V%:s/<C-R>//<c-r>z/g<cr>`x
 
 
 let g:ycm_extra_conf_globlist = ['~/.vim/bundle/YouCompleteMe/*', './*']
 
 let g:ycm_global_ycm_extra_conf = '~/.vim/.ycm_extra_conf.py'
+
+highlight CommentTypes guifg=green
+match CommentTypes /NOTE/
