@@ -1,3 +1,8 @@
+set hidden
+let g:racer_cmd = "/Users/danielbokser/Downloads/racer/target/release/racer"
+let $RUST_SRC_PATH = "/Users/danielbokser/Downloads/rustc-1.4.0/src"
+
+
 set nocompatible              " be iMproved, required
 filetype off                  " required
 
@@ -9,7 +14,7 @@ call vundle#rc()
 "call vundle#rc(path)
 
 " let Vundle manage Vundle, required
-Plugin 'gmarik/vundle'
+Plugin 'VundleVim/Vundle.vim'
 
 " The following are examples of different formats supported.
 " Keep Plugin commands between here and filetype plugin indent on.
@@ -29,11 +34,16 @@ Plugin 'git://git.wincent.com/command-t.git'
 "Plugin 'file:///home/gmarik/path/to/plugin'
 " ...
 "
+
+Plugin 'ARM9/arm-syntax-vim'
 Plugin 'vim-scripts/a.vim'
 Plugin 'danro/rename.vim'
 Plugin 'rust-lang/rust.vim'
-Plugin 'Valloric/YouCompleteMe'
+"Plugin 'Valloric/YouCompleteMe'
+Plugin 'timonv/vim-cargo'
+Plugin 'ervandew/supertab'
 
+let g:SuperTabMappingTabLiteral = '<C-space>'
 
 filetype plugin indent on     " required
 " To ignore plugin indent changes, instead use:
@@ -64,12 +74,17 @@ set tabstop=4 " tab width is 4 spaces
 set shiftwidth=4 " indent also with 4 spaces
 set expandtab " expand tabs to spaces
 
-if has("gui_running")
-    set lines=50 columns=230
-endif
 
 set hlsearch
-map <A-m> :make!<CR>
+if has("unix")
+    "map µ :wa<CR>:r! cargo build<CR>
+    map <CR> :<C-U>call BuildSource()<CR>
+    map ® :wa<CR>:!cargo run samples/mbc0.gb<CR>
+else
+    "map <A-m> :wa<CR>:r! cargo build<CR>
+    map <A-m> :wa<CR>:call BuildSource()<CR>
+    map <A-r> :wa<CR>:!cargo run samples/mbc0.gb<CR>
+endif
 inoremap {<CR> {<CR>}<Esc>ko
 inoremap {} {}
 
@@ -92,6 +107,17 @@ nmap <Leader>rf "zyiw:call Refactor()<cr>mx:silent! norm gd<cr>[{V%:s/<C-R>//<c-
 let g:ycm_extra_conf_globlist = ['~/.vim/bundle/YouCompleteMe/*', './*']
 
 let g:ycm_global_ycm_extra_conf = '~/.vim/.ycm_extra_conf.py'
+au BufNewFile,BufRead *.s,*.S set filetype=arm
 
 highlight CommentTypes guifg=green
 match CommentTypes /NOTE/
+let $LIBRARY_PATH="$LIBRARY_PATH:/usr/local/lib"
+
+function! BuildSource()
+    :wa
+    if (&ft == 'rust')
+        :make! build
+    else
+        :make!
+    endif
+endfunction
